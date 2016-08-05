@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CpuFuture","The type of future returned from the `CpuPool::execute` function."],["CpuPool","A thread pool intended to run CPU intensive work."]]});

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `LoopHandle` struct in crate `futures_mio`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, LoopHandle">
+
+    <title>futures_mio::LoopHandle - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>futures_mio</a></p><script>window.sidebarCurrent = {name: 'LoopHandle', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>futures_mio</a>::<wbr><a class='struct' href=''>LoopHandle</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-82' class='srclink' href='../src/futures_mio/futures-mio/src/event_loop.rs.html#62-65' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct LoopHandle {
+    // some fields omitted
+}</pre><div class='docblock'><p>Handle to an event loop, used to construct I/O objects, send messages, and
+otherwise interact indirectly with the event loop itself.</p>
+
+<p>Handles can be cloned, and when cloned they will still refer to the
+same underlying event loop.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../futures_mio/struct.LoopHandle.html' title='futures_mio::LoopHandle'>LoopHandle</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-265' class='srclink' href='../src/futures_mio/futures-mio/src/event_loop.rs.html#357-569' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.add_source' class='method'><code>fn <a href='#method.add_source' class='fnname'>add_source</a>(&amp;self, source: IoSource) -&gt; <a class='struct' href='../futures_mio/struct.AddSource.html' title='futures_mio::AddSource'>AddSource</a></code></h4>
+<div class='docblock'><p>Add a new source to an event loop, returning a future which will resolve
+to the token that can be used to identify this source.</p>
+
+<p>When a new I/O object is created it needs to be communicated to the
+event loop to ensure that it&#39;s registered and ready to receive
+notifications. The event loop with then respond with a unique token that
+this handle can be identified with (the resolved value of the returned
+future).</p>
+
+<p>This token is then passed in turn to each of the methods below to
+interact with notifications on the I/O object itself.</p>
+
+<h1 id='panics' class='section-header'><a href='#panics'>Panics</a></h1>
+<p>The returned future will panic if the event loop this handle is
+associated with has gone away, or if there is an error communicating
+with the event loop.</p>
+</div><h4 id='method.schedule' class='method'><code>fn <a href='#method.schedule' class='fnname'>schedule</a>(&amp;self, tok: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, task: &amp;mut <a class='struct' href='../futures/task/struct.Task.html' title='futures::task::Task'>Task</a>)</code></h4>
+<div class='docblock'><p>Begin listening for events on an event loop.</p>
+
+<p>Once an I/O object has been registered with the event loop through the
+<code>add_source</code> method, this method can be used with the assigned token to
+begin awaiting notifications.</p>
+
+<p>The <code>dir</code> argument indicates how the I/O object is expected to be
+awaited on (either readable or writable) and the <code>wake</code> callback will be
+invoked. Note that one the <code>wake</code> callback is invoked once it will not
+be invoked again, it must be re-<code>schedule</code>d to continue receiving
+notifications.</p>
+
+<h1 id='panics-1' class='section-header'><a href='#panics-1'>Panics</a></h1>
+<p>This function will panic if the event loop this handle is associated
+with has gone away, or if there is an error communicating with the event
+loop.</p>
+</div><h4 id='method.deschedule' class='method'><code>fn <a href='#method.deschedule' class='fnname'>deschedule</a>(&amp;self, tok: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</code></h4>
+<div class='docblock'><p>Stop listening for events on an event loop.</p>
+
+<p>Once a callback has been scheduled with the <code>schedule</code> method, it can be
+unregistered from the event loop with this method. This method does not
+guarantee that the callback will not be invoked if it hasn&#39;t already,
+but a best effort will be made to ensure it is not called.</p>
+
+<h1 id='panics-2' class='section-header'><a href='#panics-2'>Panics</a></h1>
+<p>This function will panic if the event loop this handle is associated
+with has gone away, or if there is an error communicating with the event
+loop.</p>
+</div><h4 id='method.drop_source' class='method'><code>fn <a href='#method.drop_source' class='fnname'>drop_source</a>(&amp;self, tok: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</code></h4>
+<div class='docblock'><p>Unregister all information associated with a token on an event loop,
+deallocating all internal resources assigned to the given token.</p>
+
+<p>This method should be called whenever a source of events is being
+destroyed. This will ensure that the event loop can reuse <code>tok</code> for
+another I/O object if necessary and also remove it from any poll
+notifications and callbacks.</p>
+
+<p>Note that wake callbacks may still be invoked after this method is
+called as it may take some time for the message to drop a source to
+reach the event loop. Despite this fact, this method will attempt to
+ensure that the callbacks are <strong>not</strong> invoked, so pending scheduled
+callbacks cannot be relied upon to get called.</p>
+
+<h1 id='panics-3' class='section-header'><a href='#panics-3'>Panics</a></h1>
+<p>This function will panic if the event loop this handle is associated
+with has gone away, or if there is an error communicating with the event
+loop.</p>
+</div><h4 id='method.add_timeout' class='method'><code>fn <a href='#method.add_timeout' class='fnname'>add_timeout</a>(&amp;self, at: <a class='struct' href='https://doc.rust-lang.org/nightly/std/time/struct.Instant.html' title='std::time::Instant'>Instant</a>) -&gt; <a class='struct' href='../futures_mio/struct.AddTimeout.html' title='futures_mio::AddTimeout'>AddTimeout</a></code></h4>
+<div class='docblock'><p>Adds a new timeout to get fired at the specified instant, notifying the
+specified task.</p>
+</div><h4 id='method.update_timeout' class='method'><code>fn <a href='#method.update_timeout' class='fnname'>update_timeout</a>(&amp;self, timeout: &amp;<a class='struct' href='../futures_mio/struct.TimeoutToken.html' title='futures_mio::TimeoutToken'>TimeoutToken</a>, task: &amp;mut <a class='struct' href='../futures/task/struct.Task.html' title='futures::task::Task'>Task</a>)</code></h4>
+<div class='docblock'><p>Updates a previously added timeout to notify a new task instead.</p>
+
+<h1 id='panics-4' class='section-header'><a href='#panics-4'>Panics</a></h1>
+<p>This method will panic if the timeout specified was not created by this
+loop handle&#39;s <code>add_timeout</code> method.</p>
+</div><h4 id='method.cancel_timeout' class='method'><code>fn <a href='#method.cancel_timeout' class='fnname'>cancel_timeout</a>(&amp;self, timeout: &amp;<a class='struct' href='../futures_mio/struct.TimeoutToken.html' title='futures_mio::TimeoutToken'>TimeoutToken</a>)</code></h4>
+<div class='docblock'><p>Cancel a previously added timeout.</p>
+
+<h1 id='panics-5' class='section-header'><a href='#panics-5'>Panics</a></h1>
+<p>This method will panic if the timeout specified was not created by this
+loop handle&#39;s <code>add_timeout</code> method.</p>
+</div><h4 id='method.add_loop_data' class='method'><code>fn <a href='#method.add_loop_data' class='fnname'>add_loop_data</a>&lt;F,&nbsp;A&gt;(&amp;self, f: F) -&gt; <a class='struct' href='../futures_mio/struct.AddLoopData.html' title='futures_mio::AddLoopData'>AddLoopData</a>&lt;F,&nbsp;A&gt; <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html' title='core::ops::FnOnce'>FnOnce</a>() -&gt; A + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + 'static, A: <a class='trait' href='https://doc.rust-lang.org/nightly/core/any/trait.Any.html' title='core::any::Any'>Any</a></span></code></h4>
+<div class='docblock'><p>Schedules a closure to add some data to event loop thread itself.</p>
+
+<p>This function is useful for when storing non-<code>Send</code> data inside of a
+future. This returns a future which will resolve to a <code>LoopData&lt;A&gt;</code>
+handle, which is itself <code>Send + &#39;static</code> regardless of the underlying
+<code>A</code>. That is, for example, you can create a handle to some data that
+contains an <code>Rc</code>, for example.</p>
+
+<p>This function takes a closure which may be sent to the event loop to
+generate an instance of type <code>A</code>. The closure itself is required to be
+<code>Send + &#39;static</code>, but the data it produces is only required to adhere to
+<code>Any</code>.</p>
+
+<p>If the returned future is polled on the event loop thread itself it will
+very cheaply resolve to a handle to the data, but if it&#39;s not polled on
+the event loop then it will send a message to the event loop to run the
+closure <code>f</code>, generate a handle, and then the future will yield it back.</p>
+</div><h4 id='method.shutdown' class='method'><code>fn <a href='#method.shutdown' class='fnname'>shutdown</a>(&amp;self)</code></h4>
+<div class='docblock'><p>Send a message to the associated event loop that it should shut down, or
+otherwise break out of its current loop of iteration.</p>
+
+<p>This method does not forcibly cause the event loop to shut down or
+perform an interrupt on whatever task is currently running, instead a
+message is simply enqueued to at a later date process the request to
+stop looping ASAP.</p>
+
+<h1 id='panics-6' class='section-header'><a href='#panics-6'>Panics</a></h1>
+<p>This function will panic if the event loop this handle is associated
+with has gone away, or if there is an error communicating with the event
+loop.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../futures_mio/struct.LoopHandle.html' title='futures_mio::LoopHandle'>LoopHandle</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-578' class='srclink' href='../src/futures_mio/futures-mio/src/tcp.rs.html#166-192' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.tcp_listen' class='method'><code>fn <a href='#method.tcp_listen' class='fnname'>tcp_listen</a>(self, addr: &amp;<a class='enum' href='https://doc.rust-lang.org/nightly/std/net/addr/enum.SocketAddr.html' title='std::net::addr::SocketAddr'>SocketAddr</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='type' href='../futures_io/type.IoFuture.html' title='futures_io::IoFuture'>IoFuture</a>&lt;<a class='struct' href='../futures_mio/struct.TcpListener.html' title='futures_mio::TcpListener'>TcpListener</a>&gt;&gt;</code></h4>
+<div class='docblock'><p>Create a new TCP listener associated with this event loop.</p>
+
+<p>The TCP listener will bind to the provided <code>addr</code> address, if available,
+and will be returned as a future. The returned future, if resolved
+successfully, can then be used to accept incoming connections.</p>
+</div><h4 id='method.tcp_connect' class='method'><code>fn <a href='#method.tcp_connect' class='fnname'>tcp_connect</a>(self, addr: &amp;<a class='enum' href='https://doc.rust-lang.org/nightly/std/net/addr/enum.SocketAddr.html' title='std::net::addr::SocketAddr'>SocketAddr</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='type' href='../futures_io/type.IoFuture.html' title='futures_io::IoFuture'>IoFuture</a>&lt;<a class='struct' href='../futures_mio/struct.TcpStream.html' title='futures_mio::TcpStream'>TcpStream</a>&gt;&gt;</code></h4>
+<div class='docblock'><p>Create a new TCP stream connected to the specified address.</p>
+
+<p>This function will create a new TCP socket and attempt to connect it to
+the <code>addr</code> provided. The returned future will be resolved once the
+stream has successfully connected. If an error happens during the
+connection or during the socket creation, that error will be returned to
+the future instead.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../futures_mio/struct.LoopHandle.html' title='futures_mio::LoopHandle'>LoopHandle</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-705' class='srclink' href='../src/futures_mio/futures-mio/src/udp.rs.html#21-34' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.udp_bind' class='method'><code>fn <a href='#method.udp_bind' class='fnname'>udp_bind</a>(self, addr: &amp;<a class='enum' href='https://doc.rust-lang.org/nightly/std/net/addr/enum.SocketAddr.html' title='std::net::addr::SocketAddr'>SocketAddr</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='type' href='../futures_io/type.IoFuture.html' title='futures_io::IoFuture'>IoFuture</a>&lt;<a class='struct' href='../futures_mio/struct.UdpSocket.html' title='futures_mio::UdpSocket'>UdpSocket</a>&gt;&gt;</code></h4>
+<div class='docblock'><p>Create a new UDP socket bound to the specified address.</p>
+
+<p>This function will create a new UDP socket and attempt to bind it to the
+<code>addr</code> provided. The returned future will be resolved once the socket
+has successfully bound. If an error happens during the binding or during
+the socket creation, that error will be returned to the future instead.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../futures_mio/struct.LoopHandle.html' title='futures_mio::LoopHandle'>LoopHandle</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-809' class='srclink' href='../src/futures_mio/futures-mio/src/timeout.rs.html#23-47' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.timeout' class='method'><code>fn <a href='#method.timeout' class='fnname'>timeout</a>(self, dur: <a class='struct' href='https://doc.rust-lang.org/nightly/std/time/duration/struct.Duration.html' title='std::time::duration::Duration'>Duration</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='type' href='../futures_io/type.IoFuture.html' title='futures_io::IoFuture'>IoFuture</a>&lt;<a class='struct' href='../futures_mio/struct.Timeout.html' title='futures_mio::Timeout'>Timeout</a>&gt;&gt;</code></h4>
+<div class='docblock'><p>Creates a new timeout which will fire at <code>dur</code> time into the future.</p>
+
+<p>This function will return a future that will resolve to the actual
+timeout object. The timeout object itself is then a future which will be
+set to fire at the specified point in the future.</p>
+</div><h4 id='method.timeout_at' class='method'><code>fn <a href='#method.timeout_at' class='fnname'>timeout_at</a>(self, at: <a class='struct' href='https://doc.rust-lang.org/nightly/std/time/struct.Instant.html' title='std::time::Instant'>Instant</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='type' href='../futures_io/type.IoFuture.html' title='futures_io::IoFuture'>IoFuture</a>&lt;<a class='struct' href='../futures_mio/struct.Timeout.html' title='futures_mio::Timeout'>Timeout</a>&gt;&gt;</code></h4>
+<div class='docblock'><p>Creates a new timeout which will fire at the time specified by <code>at</code>.</p>
+
+<p>This function will return a future that will resolve to the actual
+timeout object. The timeout object itself is then a future which will be
+set to fire at the specified point in the future.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../futures_mio/struct.LoopHandle.html' title='futures_mio::LoopHandle'>LoopHandle</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-77' class='srclink' href='../src/futures_mio/futures-mio/src/event_loop.rs.html#61' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../futures_mio/struct.LoopHandle.html' title='futures_mio::LoopHandle'>LoopHandle</a></code></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "futures_mio";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

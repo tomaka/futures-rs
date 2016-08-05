@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `futures_io` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, futures_io">
+
+    <title>futures_io - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'futures_io', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>futures_io</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-0' class='srclink' href='../src/futures_io/futures-io/src/lib.rs.html#1-186' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Future-based abstractions for dealing with I/O</p>
+
+<p>Building on top of the <code>futures</code> crate the purpose of this crate is to
+provide the abstractions necessary for interoperating I/O streams in an
+asynchronous fashion.</p>
+
+<p>At its core is the abstraction of I/O objects as a collection of <code>Read</code>,
+<code>Write</code>, and <code>Stream&lt;Item=Ready, Error=io::Error&gt;</code> implementations. This can
+then be used to define a number of combinators and then later define further
+abstractions on these streams.</p>
+
+<p>Note that this library is currently a work in progress, but stay tuned for
+updates!</p>
+</div><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='macro' href='macro.try_nb!.html'
+                                  title='futures_io::try_nb!'>try_nb!</a></td>
+                           <td class='docblock short'>
+                                <p>A macro to assist with dealing with <code>io::Result&lt;T&gt;</code> types where the error
+may have the type <code>WouldBlock</code>.</p>
+                           </td>
+                       </tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.BufReader.html'
+                                  title='futures_io::BufReader'>BufReader</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O object which amortizes a number of <code>read</code> operations by reading many
+bytes at once into an internal buffer.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.BufWriter.html'
+                                  title='futures_io::BufWriter'>BufWriter</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O object intended to mirror the <code>BufWriter</code> abstraction in the standard
+library.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Chain.html'
+                                  title='futures_io::Chain'>Chain</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O combinator which will read all bytes from one stream and then the
+next.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Copy.html'
+                                  title='futures_io::Copy'>Copy</a></td>
+                           <td class='docblock short'>
+                                <p>A future which will copy all data from a reader into a writer.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Empty.html'
+                                  title='futures_io::Empty'>Empty</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O combinator which is always ready for a read and is always at EOF.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Flush.html'
+                                  title='futures_io::Flush'>Flush</a></td>
+                           <td class='docblock short'>
+                                <p>A future used to fully flush an I/O object.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ReadToEnd.html'
+                                  title='futures_io::ReadToEnd'>ReadToEnd</a></td>
+                           <td class='docblock short'>
+                                <p>A future which can be used to easily read the entire contents of a stream
+into a vector.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ReadyTracker.html'
+                                  title='futures_io::ReadyTracker'>ReadyTracker</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O object which can be used to track the read/write readiness of an
+underlying object.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Repeat.html'
+                                  title='futures_io::Repeat'>Repeat</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O object of an infinite stream of bytes that&#39;s always ready to read.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Sink.html'
+                                  title='futures_io::Sink'>Sink</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O object always ready for writing that will simply move all bytes
+written to it into the void.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Take.html'
+                                  title='futures_io::Take'>Take</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O combinator which will read at most a fixed number of bytes from an
+underlying stream before continually returning that it is at EOF.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.TaskIo.html'
+                                  title='futures_io::TaskIo'>TaskIo</a></td>
+                           <td class='docblock short'>
+                                <p>Abstraction that allows inserting an I/O object into task-local storage,
+returning a handle that can be split.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.TaskIoRead.html'
+                                  title='futures_io::TaskIoRead'>TaskIoRead</a></td>
+                           <td class='docblock short'>
+                                <p>The readable half of a <code>TaskIo&lt;T&gt;</code> instance returned from <code>TaskIo::split</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.TaskIoWrite.html'
+                                  title='futures_io::TaskIoWrite'>TaskIoWrite</a></td>
+                           <td class='docblock short'>
+                                <p>The writable half of a <code>TaskIo&lt;T&gt;</code> instance returned from <code>TaskIo::split</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Window.html'
+                                  title='futures_io::Window'>Window</a></td>
+                           <td class='docblock short'>
+                                <p>A owned window around an underlying buffer.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.WriteAll.html'
+                                  title='futures_io::WriteAll'>WriteAll</a></td>
+                           <td class='docblock short'>
+                                <p>A future used to write the entire contents of some data to a stream.</p>
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.Ready.html'
+                                  title='futures_io::Ready'>Ready</a></td>
+                           <td class='docblock short'>
+                                <p>Readiness notifications that a stream can deliver.</p>
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.ReadTask.html'
+                                  title='futures_io::ReadTask'>ReadTask</a></td>
+                           <td class='docblock short'>
+                                <p>A trait representing streams that can be read within the context of a
+future&#39;s <code>Task</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.WriteTask.html'
+                                  title='futures_io::WriteTask'>WriteTask</a></td>
+                           <td class='docblock short'>
+                                <p>A trait representing streams that can be written to within the context of a
+future&#39;s <code>Task</code>.</p>
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.chain.html'
+                                  title='futures_io::chain'>chain</a></td>
+                           <td class='docblock short'>
+                                <p>Chains one I/O stream onto another.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.copy.html'
+                                  title='futures_io::copy'>copy</a></td>
+                           <td class='docblock short'>
+                                <p>Creates a future which represents copying all the bytes from one object to
+another.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.empty.html'
+                                  title='futures_io::empty'>empty</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O object which is always at EOF and ready for a read.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.flush.html'
+                                  title='futures_io::flush'>flush</a></td>
+                           <td class='docblock short'>
+                                <p>Creates a future which will entirely flush an I/O object and then yield the
+object itself.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.read_to_end.html'
+                                  title='futures_io::read_to_end'>read_to_end</a></td>
+                           <td class='docblock short'>
+                                <p>Creates a future which will read all the bytes associated with the I/O
+object <code>A</code> into the buffer provided.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.repeat.html'
+                                  title='futures_io::repeat'>repeat</a></td>
+                           <td class='docblock short'>
+                                <p>Creates an I/O combinator which is always ready for reading, and infinitely
+yields a stream of bytes corresopnding to the value provided here.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.sink.html'
+                                  title='futures_io::sink'>sink</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O combinator that is always ready to be written to and just gobbles up
+anything written to it.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.take.html'
+                                  title='futures_io::take'>take</a></td>
+                           <td class='docblock short'>
+                                <p>Creates a new I/O object which will read at most <code>amt</code> bytes from the
+underlying stream, and then continuously return that it is at EOF.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.write_all.html'
+                                  title='futures_io::write_all'>write_all</a></td>
+                           <td class='docblock short'>
+                                <p>Creates a future that will write the entire contents of the buffer <code>buf</code> to
+the stream <code>a</code> provided.</p>
+                           </td>
+                       </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='type' href='type.IoFuture.html'
+                                  title='futures_io::IoFuture'>IoFuture</a></td>
+                           <td class='docblock short'>
+                                <p>A convenience typedef around a <code>Future</code> whose error component is <code>io::Error</code></p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='type' href='type.IoStream.html'
+                                  title='futures_io::IoStream'>IoStream</a></td>
+                           <td class='docblock short'>
+                                <p>A convenience typedef around a <code>Stream</code> whose error component is <code>io::Error</code></p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "futures_io";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

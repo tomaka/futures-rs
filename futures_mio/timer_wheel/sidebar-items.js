@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Timeout","A timeout which has been scheduled with a timer wheel."],["TimerWheel","An implementation of a timer wheel where data can be associated with each timer firing."]]});

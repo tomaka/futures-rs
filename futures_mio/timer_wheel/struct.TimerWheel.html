@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `TimerWheel` struct in crate `futures_mio`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, TimerWheel">
+
+    <title>futures_mio::timer_wheel::TimerWheel - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>futures_mio</a>::<wbr><a href='index.html'>timer_wheel</a></p><script>window.sidebarCurrent = {name: 'TimerWheel', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>futures_mio</a>::<wbr><a href='index.html'>timer_wheel</a>::<wbr><a class='struct' href=''>TimerWheel</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-835' class='srclink' href='../../src/futures_mio/futures-mio/src/timer_wheel.rs.html#22-54' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct TimerWheel&lt;T&gt; {
+    // some fields omitted
+}</pre><div class='docblock'><p>An implementation of a timer wheel where data can be associated with each
+timer firing.</p>
+
+<p>This structure implements a timer wheel data structure where each timeout
+has a piece of associated data, <code>T</code>. A timer wheel supports O(1) insertion
+and removal of timers, as well as quickly figuring out what needs to get
+fired.</p>
+
+<p>Note, though, that the resolution of a timer wheel means that timeouts will
+not arrive promptly when they expire, but rather in certain increments of
+each time. The time delta between each slot of a time wheel is of a fixed
+length, meaning that if a timeout is scheduled between two slots it&#39;ll end
+up getting scheduled into the later slot.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;T&gt; <a class='struct' href='../../futures_mio/timer_wheel/struct.TimerWheel.html' title='futures_mio::timer_wheel::TimerWheel'>TimerWheel</a>&lt;T&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-863' class='srclink' href='../../src/futures_mio/futures-mio/src/timer_wheel.rs.html#82-293' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; <a class='struct' href='../../futures_mio/timer_wheel/struct.TimerWheel.html' title='futures_mio::timer_wheel::TimerWheel'>TimerWheel</a>&lt;T&gt;</code></h4>
+<div class='docblock'><p>Creates a new timer wheel configured with no timeouts and with the
+default parameters.</p>
+
+<p>Currently this is a timer wheel of length 256 with a 100ms time
+resolution.</p>
+</div><h4 id='method.insert' class='method'><code>fn <a href='#method.insert' class='fnname'>insert</a>(&amp;mut self, at: <a class='struct' href='https://doc.rust-lang.org/nightly/std/time/struct.Instant.html' title='std::time::Instant'>Instant</a>, data: T) -&gt; <a class='struct' href='../../futures_mio/timer_wheel/struct.Timeout.html' title='futures_mio::timer_wheel::Timeout'>Timeout</a></code></h4>
+<div class='docblock'><p>Creates a new timeout to get fired at a particular point in the future.</p>
+
+<p>The timeout will be associated with the specified <code>data</code>, and this data
+will be returned from <code>poll</code> when it&#39;s ready.</p>
+
+<p>The returned <code>Timeout</code> can later get passesd to <code>cancel</code> to retrieve the
+data and ensure the timeout doesn&#39;t fire.</p>
+
+<p>This method completes in O(1) time.</p>
+
+<h1 id='panics' class='section-header'><a href='#panics'>Panics</a></h1>
+<p>This method will panic if <code>at</code> is before the time that this timer wheel
+was created.</p>
+</div><h4 id='method.poll' class='method'><code>fn <a href='#method.poll' class='fnname'>poll</a>(&amp;mut self, at: <a class='struct' href='https://doc.rust-lang.org/nightly/std/time/struct.Instant.html' title='std::time::Instant'>Instant</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;T&gt;</code></h4>
+<div class='docblock'><p>Queries this timer to see if any timeouts are ready to fire.</p>
+
+<p>This function will advance the internal wheel to the time specified by
+<code>at</code>, returning any timeout which has happened up to that point. This
+method should be called in a loop until it returns <code>None</code> to ensure that
+all timeouts are processed.</p>
+
+<h1 id='panics-1' class='section-header'><a href='#panics-1'>Panics</a></h1>
+<p>This method will panic if <code>at</code> is before the instant that this timer
+wheel was created.</p>
+</div><h4 id='method.next_timeout' class='method'><code>fn <a href='#method.next_timeout' class='fnname'>next_timeout</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/time/struct.Instant.html' title='std::time::Instant'>Instant</a>&gt;</code></h4>
+<div class='docblock'><p>Returns the instant in time that corresponds to the next timeout
+scheduled in this wheel.</p>
+</div><h4 id='method.cancel' class='method'><code>fn <a href='#method.cancel' class='fnname'>cancel</a>(&amp;mut self, timeout: &amp;<a class='struct' href='../../futures_mio/timer_wheel/struct.Timeout.html' title='futures_mio::timer_wheel::Timeout'>Timeout</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;T&gt;</code></h4>
+<div class='docblock'><p>Cancels the specified timeout.</p>
+
+<p>For timeouts previously registered via <code>insert</code> they can be passed back
+to this method to cancel the associated timeout, retrieving the value
+inserted if the timeout has not already fired.</p>
+
+<p>This method completes in O(1) time.</p>
+
+<h1 id='panics-2' class='section-header'><a href='#panics-2'>Panics</a></h1>
+<p>This method may panic if <code>timeout</code> wasn&#39;t created by this timer wheel.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "futures_mio";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `futures_mio` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, futures_mio">
+
+    <title>futures_mio - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'futures_mio', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>futures_mio</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-0' class='srclink' href='../src/futures_mio/futures-mio/src/lib.rs.html#1-40' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>A binding to mio giving it a future/stream interface on top.</p>
+
+<p>This library contains the rudimentary bindings to an event loop in mio which
+provides future and stream-based abstractions of all the underlying I/O
+objects that mio provides internally.</p>
+
+<p>Currently very much a work in progress, and breakage should be expected!</p>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='timer_wheel/index.html'
+                                  title='futures_mio::timer_wheel'>timer_wheel</a></td>
+                           <td class='docblock short'>
+                                <p>A timer wheel implementation</p>
+                           </td>
+                       </tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.AddLoopData.html'
+                                  title='futures_mio::AddLoopData'>AddLoopData</a></td>
+                           <td class='docblock short'>
+                                <p>Future returned from the <code>LoopHandle::add_loop_data</code> method.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.AddSource.html'
+                                  title='futures_mio::AddSource'>AddSource</a></td>
+                           <td class='docblock short'>
+                                <p>A future which will resolve a unique <code>tok</code> token for an I/O object.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.AddTimeout.html'
+                                  title='futures_mio::AddTimeout'>AddTimeout</a></td>
+                           <td class='docblock short'>
+                                <p>Return value from the <code>LoopHandle::add_timeout</code> method, a future that will
+resolve to a <code>TimeoutToken</code> to configure the behavior of that timeout.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Loop.html'
+                                  title='futures_mio::Loop'>Loop</a></td>
+                           <td class='docblock short'>
+                                <p>An event loop.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.LoopData.html'
+                                  title='futures_mio::LoopData'>LoopData</a></td>
+                           <td class='docblock short'>
+                                <p>A handle to data that is owned by an event loop thread, and is only
+accessible on that thread itself.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.LoopHandle.html'
+                                  title='futures_mio::LoopHandle'>LoopHandle</a></td>
+                           <td class='docblock short'>
+                                <p>Handle to an event loop, used to construct I/O objects, send messages, and
+otherwise interact indirectly with the event loop itself.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ReadinessStream.html'
+                                  title='futures_mio::ReadinessStream'>ReadinessStream</a></td>
+                           <td class='docblock short'>
+                                <p>A concrete implementation of a stream of readiness notifications for I/O
+objects that originates from an event loop.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.TcpListener.html'
+                                  title='futures_mio::TcpListener'>TcpListener</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O object representing a TCP socket listening for incoming connections.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.TcpStream.html'
+                                  title='futures_mio::TcpStream'>TcpStream</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O object representing a TCP stream connected to a remote endpoint.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Timeout.html'
+                                  title='futures_mio::Timeout'>Timeout</a></td>
+                           <td class='docblock short'>
+                                <p>A future representing the notification that a timeout has occurred.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.TimeoutToken.html'
+                                  title='futures_mio::TimeoutToken'>TimeoutToken</a></td>
+                           <td class='docblock short'>
+                                <p>A token that identifies an active timeout.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.UdpSocket.html'
+                                  title='futures_mio::UdpSocket'>UdpSocket</a></td>
+                           <td class='docblock short'>
+                                <p>An I/O object representing a UDP socket.</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "futures_mio";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
